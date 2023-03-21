@@ -28,12 +28,12 @@ class ADXL345:
         utime.sleep(0.5)
 
     def reg_read(self, addr, reg, nbytes=1):
-        return self.i2c.readfrom_mem(addr, reg, nbytes) if nbytes > 1 else bytearray()
+        return self.i2c.readfrom_mem(addr, reg, nbytes) if nbytes >= 1 else bytearray()
 
     def check_connection(self):
         data = self.reg_read(self.address, REG_DEVICE_ID)
 
-        return True if data != bytearray((DEVICE_ID,)) else False
+        return True if data == bytearray((DEVICE_ID,)) else False
 
     def read_power_control_register(self):
         return self.reg_read(self.address, REG_POWER_CTL)
