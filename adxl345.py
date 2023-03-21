@@ -25,7 +25,7 @@ class ADXL345:
 
         self.i2c.writeto_mem(addr, reg, data_struct)
 
-        utime.sleep(2.0)
+        utime.sleep(0.5)
 
     def reg_read(self, addr, reg, nbytes=1):
         return self.i2c.readfrom_mem(addr, reg, nbytes) if nbytes > 1 else bytearray()
@@ -45,7 +45,6 @@ class ADXL345:
 
     def init(self):
         self.start_measurements()
-        utime.sleep(2.0)
 
     def get_xyz(self):
         data = self.reg_read(self.address, REG_DATAX0, 6)
