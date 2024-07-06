@@ -38,9 +38,11 @@ class ADXL345:
     def stop_measurements(self):
         self.i2c.writeto_mem(self.address, POWER_CONTROL_REGISTER_ADDR, bytearray([STANDBY_MODE]))
 
-    def get_xyz(self) -> list[float]:
+    def get_readings(self) -> tuple[float, float, float]:
+        """returns acceleration for x, y, z axis """
+
         data = self.i2c.readfrom_mem(self.address, DATA_REGISTER_ADDR, 6)
         raw_data_struct = struct.unpack("<hhh", data)
         processed_data = [val * self.__final_readings_factor for val in raw_data_struct]
 
-        return processed_data
+        return processed_data[0], processed_data[1], processed_data[2]
