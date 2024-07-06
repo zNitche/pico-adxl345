@@ -16,16 +16,17 @@ def main():
     if sensor.check_connection():
         sensor.start_measurements()
 
-        while True:
-            x, y, z = sensor.get_xyz()
+        for _ in range(10):
+            x, y, z = sensor.get_readings()
             print(f"X:{x} | Y:{y} | Z:{z}")
 
-            time.sleep(1)
+            time.sleep(0.5)
+
+        sensor.stop_measurements()
 
 
 if __name__ == '__main__':
     main()
-
 ```
 
 #### Resources
