@@ -34,25 +34,32 @@ class DataFormatSettings:
         self.range_d0 = data[6]
         self.range_d1 = data[7]
 
-        self.combined_values = [self.self_test, self.spi, self.int_invert, self.d4,
-                                self.full_res, self.justify, self.range_d0, self.range_d1]
+    def __get_combined_values(self) -> list[int]:
+        return [self.self_test, self.spi, self.int_invert, self.d4,
+                self.full_res, self.justify, self.range_d0, self.range_d1]
 
-    def __parse_bits(self, data: bytes) -> str:
-        return f"{data[0]:0>{len(self.combined_values)}b}"
+    def __parse_bits(self, data: bytes) -> list[int]:
+        # return f"{data[0]:0>8b}"
+        bits = []
+
+        for ind in range(8):
+            bits.append((data[0] >> 7 - ind) & 1)
+
+        return bits
 
     def __combine_settings(self) -> str:
-        return "".join([str(item) for item in self.combined_values])
+        return "".join([str(item) for item in self.__get_combined_values()])
 
     def dump(self) -> bytearray:
         seq = self.__combine_settings()
         return bytearray([int(seq, 2)])
 
     def set_range(self, range: int):
-        parsed_data = f"{bytes([range])[0]:0>2b}"
+        hex_range = int(hex(range), 16)
 
         self.full_res = 1
-        self.range_d0 = parsed_data[0]
-        self.range_d1 = parsed_data[1]
+        self.range_d0 = (hex_range >> 1) & 1
+        self.range_d1 = (hex_range >> 0) & 1
 
     def __str__(self):
         return self.__combine_settings()
