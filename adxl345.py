@@ -55,11 +55,9 @@ class DataFormatSettings:
         return bytearray([int(seq, 2)])
 
     def set_range(self, range: int):
-        hex_range = int(hex(range), 16)
-
         self.full_res = 1
-        self.range_d0 = (hex_range >> 1) & 1
-        self.range_d1 = (hex_range >> 0) & 1
+        self.range_d0 = (range >> 1) & 1
+        self.range_d1 = (range >> 0) & 1
 
     def __str__(self):
         return self.__combine_settings()
