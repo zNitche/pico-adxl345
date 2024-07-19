@@ -4,6 +4,7 @@ import machine
 from micropython import const
 
 DEVICE_ID_REGISTER_ADDR = const(0x00)
+DEVICE_ADDRESS = const(0x53)
 DEVICE_ID = const(0xE5)
 POWER_CONTROL_REGISTER_ADDR = const(0x2D)
 DATA_REGISTER_ADDR = const(0x32)
@@ -64,7 +65,7 @@ class DataFormatSettings:
 
 
 class ADXL345:
-    def __init__(self, i2c: machine.I2C, address=0x53, range=RANGE_2G):
+    def __init__(self, i2c: machine.I2C, address=DEVICE_ADDRESS, range=RANGE_2G):
         self.i2c = i2c
         self.address = address
 
